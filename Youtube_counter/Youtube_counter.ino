@@ -1,5 +1,5 @@
 // Powered By Arduino classroom Youtube Channel
-
+// ORIGINAL project https://github.com/filmcup/Esp32_youtube_counter_with_oled/blob/main/Youtube_counter/YoutubeApi.cpp
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <YoutubeApi.h>
@@ -9,14 +9,19 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #define OLED_RESET 16
-Adafruit_SSD1306 display(OLED_RESET);
+
+#define SCREEN_WIDTH 128 // OLED width,  in pixels
+#define SCREEN_HEIGHT 64 // OLED height, in pixels
 
 
-const char ssid[] = "Your WIFI Router SSID";
-const char password[] = "Your WIFI Router Password";
+//Adafruit_SSD1306 display(OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-#define API_KEY "Enter Your API key"
-#define CHANNEL_ID "Enter Your Channel ID"
+const char ssid[] = "OOZTEST";
+const char password[] = "diegodiego";
+
+#define API_KEY "QUI INSERIRE LA CHIAVE API DI YT"
+#define CHANNEL_ID "UCm3gzmmPBf8AwbEvsANWBBg"
 
 WiFiClientSecure client;
 YoutubeApi api(API_KEY, client);
@@ -31,19 +36,19 @@ void setup() {
   display.setTextSize(1); // กำหนดขนาดตัวอักษร
   display.setTextColor(WHITE);
   display.setCursor(0,0); // กำหนดตำแหน่ง x,y ที่จะแสดงผล
-  display.println(" OLED 0.96 TESTER ");
-  display.setCursor(0,10);
+  display.println(" FOLLOWER COUNTER ");
+  display.setCursor(0,20);
   display.setTextSize(2);
   display.setTextColor(BLACK, WHITE); //กำหนดข้อความสีขาว ฉากหลังสีดำ
-  display.println(" Myarduino");
-  display.setCursor(0,32);
+  display.println(" DIEGOOZ ");
+  display.setCursor(0,9);
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.println("128 x 64 Pixels 0.96");
+  display.println("UN PROGETTO CON ESP32");
   display.setCursor(0,48);
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.println(" www.myarduino.net "); // แสดงผลข้อความ www.Myarduino.net
+  display.println("YOUTUBE @PIXELSSQUAD"); // แสดงผลข้อความ www.Myarduino.net
   display.display();
 
   WiFi.mode(WIFI_STA);
@@ -60,6 +65,8 @@ void setup() {
   }
   Serial.println("\nWiFi connected!");
   Serial.print("IP address: ");
+  display.print("ISCRITTI: ");
+  display.println(api.channelStats.subscriberCount);
   IPAddress ip = WiFi.localIP();
   Serial.println(ip);
   client.setInsecure();
@@ -67,7 +74,7 @@ void setup() {
 
 void loop() {
   if (api.getChannelStatistics(CHANNEL_ID)) {
-    Serial.println("\n---------Stats---------");
+    Serial.println("\n-------Stats---------");
 
     Serial.print("Subscriber Count: ");
     Serial.println(api.channelStats.subscriberCount);
@@ -85,19 +92,19 @@ void loop() {
     display.setTextColor(WHITE);
     display.setCursor(0,0); // กำหนดตำแหน่ง x,y ที่จะแสดงผล
     
-    display.println("\n---------Stats---------");
-
-    display.print("Subscriber Count: ");
+    display.println("\n DIEGOOZ YT CHANNEL");
+   display.println("-=-=-=-=-=-=-=-=-=-=-");
+    display.print("ISCRITTI: ");
     display.println(api.channelStats.subscriberCount);
 
-    display.print("View Count: ");
+    display.print("Views: ");
     display.println(api.channelStats.viewCount);
 
-    display.print("Video Count: ");
+    display.print("Video: ");
     display.println(api.channelStats.videoCount);
 
-    display.println("------------------------");
-
+    display.println("---------------------");
+    display.println("ISCRIVITI AL CANALE");
     display.display();
   }
   delay(timeBetweenRequests);
